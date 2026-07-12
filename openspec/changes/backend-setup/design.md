@@ -40,6 +40,11 @@ Cyber-patrol is a web application that scans the internet for malicious sites (o
 **Alternatives considered**: Server-side proxy upload, third-party upload service
 **Rationale**: Client-side upload reduces server load. Supabase handles multipart uploads natively. Server validates file types and sizes before storage.
 
+### Decision: Site scanning via Supabase Edge Functions
+**Choice**: Implement site scanning as Supabase Edge Functions
+**Alternatives considered**: Standard API endpoints, background job workers
+**Rationale**: Edge Functions run close to the data, have access to Supabase Auth context, can be triggered via HTTP or database webhooks, and support long-running tasks with proper isolation. Ideal for CPU/network-intensive scanning operations.
+
 ### Decision: Database schema design
 **Choice**: Normalize into separate tables for users, chats, messages, scans, evidence
 **Alternatives considered**: Denormalized JSON, single table

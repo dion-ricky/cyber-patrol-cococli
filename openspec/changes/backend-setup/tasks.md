@@ -33,13 +33,16 @@
 - [ ] 4.5 Implement delete chat session endpoint
 - [ ] 4.6 Set up Realtime subscription for new messages
 
-## 5. Site Scanning API
+## 5. Site Scanning Edge Function
 
-- [ ] 5.1 Implement initiate scan endpoint
-- [ ] 5.2 Create scan processing queue/job system
-- [ ] 5.3 Implement scan result storage endpoint
-- [ ] 5.4 Implement get scan result endpoint
-- [ ] 5.5 Implement scan status tracking endpoint
+- [ ] 5.1 Create Edge Function project structure
+- [ ] 5.2 Implement scan trigger endpoint (HTTP or webhook)
+- [ ] 5.3 Implement scanning logic in Edge Function
+- [ ] 5.4 Implement scan result storage via Supabase client
+- [ ] 5.5 Add Edge Function error handling and retries
+- [ ] 5.6 Deploy Edge Function to Supabase
+- [ ] 5.7 Implement get scan result API endpoint
+- [ ] 5.8 Implement scan status tracking API endpoint
 
 ## 6. Evidence Storage API
 

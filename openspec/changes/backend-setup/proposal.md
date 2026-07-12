@@ -7,7 +7,7 @@ Cyber-patrol needs a backend infrastructure to power its core functionality: sca
 - Set up Supabase backend with PostgreSQL database and blob storage
 - Implement user management (authentication, profiles)
 - Create chat session and message management system
-- Build site scanning pipeline with result storage
+- Build site scanning pipeline as Supabase Edge Function with result storage
 - Add blob storage for scan evidence (screenshots, recordings)
 - Support image/file uploads in chat messages
 
