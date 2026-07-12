@@ -12,7 +12,7 @@ The system SHALL allow users to register with email and password.
 - **THEN** system returns error "Email already registered"
 
 ### Requirement: User login
-The system SHALL authenticate users via email/password or social providers.
+The system SHALL authenticate users via email and password.
 
 #### Scenario: Email/password login
 - **WHEN** user provides valid credentials

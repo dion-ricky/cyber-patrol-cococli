@@ -28,4 +28,4 @@ Cyber-patrol needs a backend infrastructure to power its core functionality: sca
 - Backend API endpoints for all capabilities
 - Database schema for users, chats, messages, scans, evidence
 - Storage buckets for scan evidence and user uploads
-- Integration with existing frontend (ChatGPT-like interface)
+- API contracts for future frontend integration (ChatGPT-like interface)

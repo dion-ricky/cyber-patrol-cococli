@@ -1,6 +1,6 @@
 ## Context
 
-Cyber-patrol is a web application that scans the internet for malicious sites (online gambling, scams, illegal lending/BNPL). The current frontend needs a backend to power its ChatGPT-like interface where users can chat and request site scans. The backend will be built on Supabase, providing PostgreSQL database, authentication, and blob storage.
+Cyber-patrol is a web application that scans the internet for malicious sites (online gambling, scams, illegal lending/BNPL). The backend will power a ChatGPT-like interface where users can chat and request site scans. The frontend will be built as a separate change after backend setup. The backend will be built on Supabase, providing PostgreSQL database, authentication, and blob storage.
 
 ## Goals / Non-Goals
 
@@ -13,7 +13,7 @@ Cyber-patrol is a web application that scans the internet for malicious sites (o
 - Store scan evidence (images/videos) in Supabase Storage
 
 **Non-Goals:**
-- Frontend implementation (already exists)
+- Frontend implementation (will be a separate change after backend)
 - Third-party API integrations beyond Supabase
 - Advanced ML/AI for site classification (future enhancement)
 - Mobile app backend (web only for now)
