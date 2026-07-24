@@ -1,0 +1,15 @@
+services:
+  scanner:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - HEADLESS=true
+      - AI_KEY=${AI_KEY}
+      - AI_GATEWAY=${AI_GATEWAY}
+      - RESULT_BASE_PATH=/app/result
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./result:/app/result
