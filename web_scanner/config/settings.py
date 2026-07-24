@@ -36,10 +36,20 @@ class BrowserConfig:
 
 
 @dataclass(frozen=True)
+class DatabaseConfig:
+    url: str = ""
+
+    def to_dict(self) -> dict:
+        return {
+            "url": self.url,
+        }
+
+
+@dataclass(frozen=True)
 class Settings:
     llm: LLMConfig = field(default_factory=LLMConfig)
     browser: BrowserConfig = field(default_factory=BrowserConfig)
-    result_base_path: str = "result"
+    db: DatabaseConfig = field(default_factory=DatabaseConfig)
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -50,7 +60,9 @@ class Settings:
                 base_url=env.get("AI_GATEWAY", ""),
             ),
             browser=BrowserConfig(headless=headless),
-            result_base_path=env.get("RESULT_BASE_PATH", "result"),
+            db=DatabaseConfig(
+                url=env.get("DATABASE_URL", ""),
+            ),
         )
 
 

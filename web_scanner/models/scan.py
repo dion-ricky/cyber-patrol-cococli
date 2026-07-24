@@ -22,6 +22,7 @@ class ScanResult:
     website: str
     task_id: str
     classification: str
+    screenshot: bytes | None = None
 
     def to_dict(self) -> dict:
         return {
