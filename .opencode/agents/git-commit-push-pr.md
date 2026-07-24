@@ -62,9 +62,12 @@ You will execute the following steps in order:
 ### Step 5: Create Pull Request
 1. Determine the PR title: Use the commit message as the default title unless the user provides one.
 2. Determine the PR body: Generate a brief but useful description of the changes. If a PR body template exists in the repo (e.g., `.github/pull_request_template.md`), read and use its structure.
-3. Create the PR targeting `main`:
+3. Create the PR targeting `main`. Use a heredoc for the body to avoid shell escaping issues:
    ```bash
-   gh pr create --base main --head <current-branch> --title "<title>" --body "<description>"
+   gh pr create --base main --head <current-branch> --title "<title>" --body "$(cat <<'EOF'
+   <description>
+   EOF
+   )"
    ```
 4. Report the PR URL to the user so they can access it directly.
 
