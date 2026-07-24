@@ -1,0 +1,36 @@
+id_scrap,crawled_time,website,task_id,classify_website
+loginpaypal.statuspage_20260721220302_na5oak,2026-07-21 22:03:02.755,loginpaypal.statuspage,"
+        OBJECTIVE:
+        1. Open the following website:
+        https://loginpaypal.statuspage.io/
+        2. Classify whether this website is a SCAM / PHISHING / BRAND IMPERSONATION site.
+        A scam website is one that impersonates or imitates a legitimate brand or business
+        to deceive users. Examples:
+        - samsung.xyz pretending to be samsung.com
+        - login-paypal.com pretending to be paypal.com
+        - grab-foodpromo.net pretending to be grab.com
+        - tokopedia-sale.shop pretending to be tokopedia.com
+        Look for these red flags:
+        - Domain name is similar but not the official brand domain
+        - Site mimics the look/design of a well-known brand
+        - Fake login pages, fake promo pages, fake giveaway pages
+        - Requests for personal data, passwords, or payment info
+        - Deals/promotions that seem too good to be true
+        - Poor grammar, misspellings, or unusual URLs
+        3. If it is a scam/phishing/brand impersonation website, return ""SCAM_WEBSITE""
+        4. If it is NOT a scam website (legitimate site), return ""NOT_SCAM_WEBSITE""
+        5. If unable to open due to ERR_CONNECTION_RESET, return ""ERR_CONNECTION_RESET""
+        6. If unable to open due to BLOCKED BY NETWORK FILTER, return ""BLOCKED_BY_NETWORK_FILTER""
+        7. If redirected to a website with the message ""SITUS INI DIBLOKIR OLEH PEMERINTAH INDONESIA"", return ""BLOCKED_BY_GOVERNMENT""
+        8. If you see:
+            - Verifying you are human
+            - Checking your browser
+            - Cloudflare
+            - Just a moment...
+            Then return ""CLOUDFLARE_BLOCKED""
+
+        CRITICAL RULES:
+        - RETURN ONLY ONE OF THE FOLLOWING STRINGS: ""SCAM_WEBSITE"", ""NOT_SCAM_WEBSITE"", ""ERR_CONNECTION_RESET"", ""BLOCKED_BY_NETWORK_FILTER"", ""BLOCKED_BY_GOVERNMENT"", ""CLOUDFLARE_BLOCKED""
+        - Do not write summaries, narratives, or explanations.
+        - Do not use markdown code blocks (```json``` etc).
+        ",SCAM_WEBSITE

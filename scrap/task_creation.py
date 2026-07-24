@@ -1,0 +1,56 @@
+from project import Project
+
+
+class TaskCreation:
+    def __init__(self):
+        self.config = Project()
+
+    def classify_website(self, url):
+        task = f"""
+        OBJECTIVE:
+        1. Open the following website:
+        {url}
+        2. Classify the website into exactly ONE category based on what you observe.
+
+        CLASSIFICATION CATEGORIES:
+
+        A) GAMBLING_WEBSITE — The site is an online gambling/betting/judol website.
+        Indicators:
+        - Offers casino games, sports betting, slots, togel, poker, or similar
+        - Promotes gambling with terms like "bet", "jackpot", "deposit", "wd/wd"
+        - Requires account creation to gamble
+        - Common gambling domain patterns (slot, bet, casino, togel, etc.)
+
+        B) SCAM_WEBSITE — The site is a phishing/brand impersonation/fraud site.
+        Indicators:
+        - Domain name is similar but not the official brand domain (e.g., samsung.xyz for samsung.com)
+        - Mimics the look/design of a well-known brand to deceive users
+        - Fake login pages, fake promo pages, fake giveaway pages
+        - Requests for personal data, passwords, or payment info
+        - Deals/promotions that seem too good to be true
+        - Poor grammar, misspellings, or unusual URLs
+        Examples:
+        - login-paypal.com pretending to be paypal.com
+        - grab-foodpromo.net pretending to be grab.com
+        - tokopedia-sale.shop pretending to be tokopedia.com
+
+        C) SAFE_WEBSITE — The site is legitimate and safe.
+        Indicators:
+        - Official brand domain
+        - No gambling or scam indicators
+        - Normal content (news, e-commerce, social media, corporate, etc.)
+
+        CONNECTION ERRORS:
+        D) ERR_CONNECTION_RESET — Cannot open due to connection reset
+        E) BLOCKED_BY_NETWORK_FILTER — Blocked by network filtering
+        F) BLOCKED_BY_GOVERNMENT — Redirected with message "SITUS INI DIBLOKIR OLEH PEMERINTAH INDONESIA"
+        G) CLOUDFLARE_BLOCKED — Shows "Verifying you are human", "Checking your browser", "Cloudflare", or "Just a moment..."
+
+        CRITICAL RULES:
+        - RETURN ONLY ONE OF THE FOLLOWING STRINGS: "GAMBLING_WEBSITE", "SCAM_WEBSITE", "SAFE_WEBSITE", "ERR_CONNECTION_RESET", "BLOCKED_BY_NETWORK_FILTER", "BLOCKED_BY_GOVERNMENT", "CLOUDFLARE_BLOCKED"
+        - Pick the SINGLE most fitting label based on what you observe on the page.
+        - Do not write summaries, narratives, or explanations.
+        - Do not use markdown code blocks (```json``` etc).
+        """
+
+        return task

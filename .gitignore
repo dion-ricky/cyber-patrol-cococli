@@ -32,3 +32,8 @@ build/
 
 # OpenCode
 .opencode/state/
+
+# Python
+__pycache__/
+.ruff_cache/
+.venv/
