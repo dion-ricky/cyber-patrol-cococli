@@ -1,6 +1,6 @@
 FROM python:3.14-slim
 
-# System deps for Playwright Chromium
+# System deps for headless Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 \
     libatk1.0-0 \
@@ -28,12 +28,13 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
 
 # Install Python deps (layer cache)
-COPY requirements.txt .
-RUN uv pip install --system -r requirements.txt
+COPY pyproject.toml uv.lock .
+ENV UV_PROJECT_ENVIRONMENT=/usr/local
+RUN uv sync --frozen --no-dev
 
-# Install Playwright Chromium
-RUN playwright install chromium \
-    && playwright install-deps chromium
+# Install Playwright Chromium browser and system deps
+RUN uv run playwright install-deps chromium
+RUN uv run playwright install chromium
 
 # Copy source
 COPY . .

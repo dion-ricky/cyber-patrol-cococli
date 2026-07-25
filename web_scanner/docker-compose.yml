@@ -1,6 +1,19 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: scanner
+      POSTGRES_PASSWORD: scanner
+      POSTGRES_DB: scanner
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   scanner:
     build: .
+    depends_on:
+      - postgres
     env_file:
       - path: .env
         required: false
@@ -8,8 +21,11 @@ services:
       - HEADLESS=true
       - AI_KEY=${AI_KEY}
       - AI_GATEWAY=${AI_GATEWAY}
-      - RESULT_BASE_PATH=/app/result
+      - DATABASE_URL=postgres://scanner:scanner@postgres:5432/scanner
     ports:
       - "8000:8000"
     volumes:
-      - ./result:/app/result
+      - /dev/shm:/dev/shm
+
+volumes:
+  pgdata:

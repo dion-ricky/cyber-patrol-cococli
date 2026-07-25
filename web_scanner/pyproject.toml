@@ -3,8 +3,14 @@ name = "web-scanner"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
-dependencies = []
+requires-python = ">=3.14"
+dependencies = [
+    "psycopg[binary]>=3.2.0",
+    "browser-use>=0.13.6",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "playwright>=1.40.0",
+]
 
 [dependency-groups]
 dev = [
@@ -27,4 +33,4 @@ select = ["E", "F", "I", "W"]
 ignore = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["config", "scanner", "models", "prompts", "utils"]
+known-first-party = ["config", "db", "scanner", "models", "prompts", "utils"]

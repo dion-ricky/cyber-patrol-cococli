@@ -1,6 +1,6 @@
 import os
-import shutil
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from config.settings import Settings
@@ -24,7 +24,7 @@ class WebsiteScanner:
         history = await self._browser.run(prompt)
 
         classification = self._extract_result(history)
-        self._save_screenshots(history, scrap_id)
+        screenshot = self._read_screenshot(history)
 
         return ScanResult(
             scrap_id=scrap_id,
@@ -32,6 +32,7 @@ class WebsiteScanner:
             website=site_name,
             task_id=prompt,
             classification=classification,
+            screenshot=screenshot,
         )
 
     @staticmethod
@@ -39,15 +40,13 @@ class WebsiteScanner:
         result = history.final_result()
         return str(result) if result else "UNKNOWN"
 
-    def _save_screenshots(self, history: Any, scrap_id: str) -> None:
+    @staticmethod
+    def _read_screenshot(history: Any) -> bytes | None:
         screenshot_paths = history.screenshot_paths()
         if not screenshot_paths:
-            return
-
-        output_dir = self._settings.result_base_path
-        os.makedirs(output_dir, exist_ok=True)
+            return None
 
         last_path = screenshot_paths[-1]
         if last_path and os.path.exists(last_path):
-            dst = os.path.join(output_dir, f"{scrap_id}_final.png")
-            shutil.copy2(last_path, dst)
+            return Path(last_path).read_bytes()
+        return None

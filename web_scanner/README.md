@@ -27,8 +27,16 @@ An automated system for classifying websites using AI-powered browser automation
 web_scanner/
 ├── main.py                  # FastAPI API server
 ├── scan_cli.py              # One-shot CLI script for local dev
+├── scan_worker.py           # Worker subprocess for scanning
+├── migrate.py               # Database migration CLI
 ├── config/
 │   └── settings.py          # Configuration dataclasses
+├── db/
+│   ├── connection.py        # Database connection
+│   ├── repository.py        # CRUD operations
+│   └── migrations/
+│       ├── runner.py        # Migration engine
+│       └── *.sql            # Migration files
 ├── models/
 │   └── scan.py              # ScanResult, ScanRequest, ScanResponse
 ├── prompts/
@@ -38,7 +46,7 @@ web_scanner/
 │   └── website.py           # Website scanning orchestration
 ├── utils/
 │   └── url.py               # URL/ID utilities
-├── requirements.txt
+├── pyproject.toml
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .dockerignore
@@ -69,6 +77,35 @@ source .venv/bin/activate
 ```
 
 ## Development
+
+### Database Migrations
+
+Migrations run automatically at startup. To manage manually:
+
+```bash
+# Check migration status
+python migrate.py --status
+
+# Apply pending migrations
+python migrate.py
+```
+
+Creating a new migration:
+
+```bash
+# Create a new migration file with timestamp
+touch db/migrations/$(date +%Y%m%d%H%M%S)_description.sql
+```
+
+Migration file format:
+
+```sql
+-- UP
+CREATE TABLE new_table (...);
+
+-- DOWN
+DROP TABLE IF EXISTS new_table;
+```
 
 ### Pre-commit Hooks
 
@@ -137,15 +174,58 @@ Start the FastAPI server:
 uvicorn main:app --reload
 ```
 
-Scan via API:
+#### Scan a website (fire-and-forget)
 
 ```bash
 curl -X POST http://localhost:8000/scan \
   -H "Content-Type: application/json" \
-  -d '{"urls": ["https://example.com", "https://test.com"]}'
+  -d '{"url": "https://example.com"}'
 ```
 
-Health check:
+Response:
+
+```json
+{"request_id": "a1b2c3d4e5f6", "status": "pending"}
+```
+
+#### Poll for results
+
+```bash
+curl http://localhost:8000/result/a1b2c3d4e5f6
+```
+
+Response (in progress):
+
+```json
+{"request_id": "a1b2c3d4e5f6", "status": "in_progress", "error": null, "results": []}
+```
+
+Response (done):
+
+```json
+{
+  "request_id": "a1b2c3d4e5f6",
+  "status": "done",
+  "error": null,
+  "results": [
+    {
+      "id_scrap": "example_20260724120000_abc123",
+      "crawled_time": "2026-07-24T12:00:00",
+      "website": "example",
+      "task_id": "...",
+      "classify_website": "SAFE_WEBSITE"
+    }
+  ]
+}
+```
+
+Response (failed):
+
+```json
+{"request_id": "a1b2c3d4e5f6", "status": "failed", "error": "Connection timeout", "results": []}
+```
+
+#### Health check
 
 ```bash
 curl http://localhost:8000/health

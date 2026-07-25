@@ -1,9 +1,0 @@
-# Core dependencies
-pandas>=2.0.0
-
-# Web automation and browser
-browser-use>=0.13.6
-
-# API
-fastapi>=0.115.0
-uvicorn[standard]>=0.34.0
