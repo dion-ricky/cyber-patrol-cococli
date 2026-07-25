@@ -2,34 +2,46 @@ import psycopg
 
 from models.scan import ScanResult
 
-SCHEMA_SQL = """
-CREATE TABLE IF NOT EXISTS scan_results (
-    id_scrap        TEXT PRIMARY KEY,
-    crawled_time    TIMESTAMPTZ NOT NULL,
-    website         TEXT NOT NULL,
-    task_id         TEXT NOT NULL,
-    classify_website TEXT NOT NULL,
-    screenshot      BYTEA,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-"""
 
-
-def ensure_schema(conn: psycopg.Connection) -> None:
+def create_scan_request(conn: psycopg.Connection, request_id: str) -> None:
     with conn.cursor() as cur:
-        cur.execute(SCHEMA_SQL)
+        cur.execute(
+            "INSERT INTO scan_requests (request_id, status) VALUES (%s, 'pending')",
+            (request_id,),
+        )
     conn.commit()
 
 
-def insert_scan_result(conn: psycopg.Connection, result: ScanResult) -> None:
+def update_scan_status(
+    conn: psycopg.Connection,
+    request_id: str,
+    status: str,
+    error: str | None = None,
+) -> None:
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            UPDATE scan_requests
+            SET status = %s, error = %s, updated_at = NOW()
+            WHERE request_id = %s
+            """,
+            (status, error, request_id),
+        )
+    conn.commit()
+
+
+def insert_scan_result(
+    conn: psycopg.Connection, result: ScanResult, request_id: str
+) -> None:
     with conn.cursor() as cur:
         cur.execute(
             """
             INSERT INTO scan_results
-                (id_scrap, crawled_time, website, task_id,
+                (id_scrap, request_id, crawled_time, website, task_id,
                  classify_website, screenshot)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (id_scrap) DO UPDATE SET
+                request_id = EXCLUDED.request_id,
                 crawled_time = EXCLUDED.crawled_time,
                 website = EXCLUDED.website,
                 task_id = EXCLUDED.task_id,
@@ -38,6 +50,7 @@ def insert_scan_result(conn: psycopg.Connection, result: ScanResult) -> None:
             """,
             (
                 result.scrap_id,
+                request_id,
                 result.crawled_time,
                 result.website,
                 result.task_id,
@@ -46,3 +59,50 @@ def insert_scan_result(conn: psycopg.Connection, result: ScanResult) -> None:
             ),
         )
     conn.commit()
+
+
+def get_scan_request(conn: psycopg.Connection, request_id: str) -> dict | None:
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT request_id, status, error, created_at, updated_at
+            FROM scan_requests
+            WHERE request_id = %s
+            """,
+            (request_id,),
+        )
+        row = cur.fetchone()
+        if not row:
+            return None
+        return {
+            "request_id": row[0],
+            "status": row[1],
+            "error": row[2],
+            "created_at": row[3],
+            "updated_at": row[4],
+        }
+
+
+def get_scan_results_by_request(
+    conn: psycopg.Connection, request_id: str
+) -> list[dict]:
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT id_scrap, crawled_time, website, task_id, classify_website
+            FROM scan_results
+            WHERE request_id = %s
+            """,
+            (request_id,),
+        )
+        rows = cur.fetchall()
+        return [
+            {
+                "id_scrap": row[0],
+                "crawled_time": row[1],
+                "website": row[2],
+                "task_id": row[3],
+                "classify_website": row[4],
+            }
+            for row in rows
+        ]

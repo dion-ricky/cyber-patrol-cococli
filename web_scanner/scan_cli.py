@@ -3,7 +3,8 @@ import asyncio
 
 from config.settings import get_settings
 from db.connection import get_connection
-from db.repository import ensure_schema, insert_scan_result
+from db.migrations.runner import run_migrations
+from db.repository import insert_scan_result
 from scanner.browser import BrowserAgent
 from scanner.website import WebsiteScanner
 
@@ -25,7 +26,7 @@ async def main() -> None:
     settings = get_settings()
 
     conn = get_connection(settings)
-    ensure_schema(conn)
+    run_migrations(conn)
 
     browser = BrowserAgent(settings)
     scanner = WebsiteScanner(browser, settings)
@@ -33,7 +34,7 @@ async def main() -> None:
     for url in args.urls:
         print(f"Scanning: {url}")
         result = await scanner.scan(url)
-        insert_scan_result(conn, result)
+        insert_scan_result(conn, result, request_id="cli")
         print(f"  -> {result.classification} (saved to DB)")
 
     conn.close()

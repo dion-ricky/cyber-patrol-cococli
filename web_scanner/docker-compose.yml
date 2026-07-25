@@ -24,6 +24,8 @@ services:
       - DATABASE_URL=postgres://scanner:scanner@postgres:5432/scanner
     ports:
       - "8000:8000"
+    volumes:
+      - /dev/shm:/dev/shm
 
 volumes:
   pgdata:

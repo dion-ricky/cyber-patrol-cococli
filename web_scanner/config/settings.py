@@ -26,12 +26,14 @@ class BrowserConfig:
     minimum_wait_page_load_time: float = 0.1
     wait_between_actions: float = 0.1
     headless: bool = False
+    extra_chromium_args: tuple[str, ...] = ()
 
     def to_dict(self) -> dict:
         return {
             "minimum_wait_page_load_time": self.minimum_wait_page_load_time,
             "wait_between_actions": self.wait_between_actions,
             "headless": self.headless,
+            "extra_chromium_args": list(self.extra_chromium_args),
         }
 
 
@@ -54,12 +56,22 @@ class Settings:
     @classmethod
     def from_env(cls) -> "Settings":
         headless = env.get("HEADLESS", "true").lower() == "true"
+        extra_chromium_args: tuple[str, ...] = ()
+        if headless:
+            extra_chromium_args = (
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+            )
         return cls(
             llm=LLMConfig(
                 api_key=env.get("AI_KEY", ""),
                 base_url=env.get("AI_GATEWAY", ""),
             ),
-            browser=BrowserConfig(headless=headless),
+            browser=BrowserConfig(
+                headless=headless,
+                extra_chromium_args=extra_chromium_args,
+            ),
             db=DatabaseConfig(
                 url=env.get("DATABASE_URL", ""),
             ),
