@@ -52,6 +52,7 @@ class Settings:
     llm: LLMConfig = field(default_factory=LLMConfig)
     browser: BrowserConfig = field(default_factory=BrowserConfig)
     db: DatabaseConfig = field(default_factory=DatabaseConfig)
+    urlscan_api_key: str = ""
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -75,6 +76,7 @@ class Settings:
             db=DatabaseConfig(
                 url=env.get("DATABASE_URL", ""),
             ),
+            urlscan_api_key=env.get("URLSCAN_API_KEY", ""),
         )
 
 

@@ -22,8 +22,9 @@ services:
       - AI_KEY=${AI_KEY}
       - AI_GATEWAY=${AI_GATEWAY}
       - DATABASE_URL=postgres://scanner:scanner@postgres:5432/scanner
+      - URLSCAN_API_KEY=${URLSCAN_API_KEY}
     ports:
-      - "8000:8000"
+      - "8000:8080"
     volumes:
       - /dev/shm:/dev/shm
 
