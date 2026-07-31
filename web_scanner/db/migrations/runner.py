@@ -33,6 +33,11 @@ def _discover_migrations() -> list[tuple[str, Path]]:
         match = re.match(r"^(\d+)_", path.name)
         if match:
             version = match.group(1)
+            if len(version) != 14:
+                print(
+                    f"Warning: {path.name} uses {len(version)}-digit version, "
+                    "expected 14-digit timestamp (YYYYMMDDHHMMSS)"
+                )
             migrations.append((version, path))
     return migrations
 

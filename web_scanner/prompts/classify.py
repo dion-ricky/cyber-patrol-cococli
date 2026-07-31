@@ -28,7 +28,7 @@ Examples:
 - grab-foodpromo.net pretending to be grab.com
 - tokopedia-sale.shop pretending to be tokopedia.com
 
-C) SAFE_WEBSITE — The site is legitimate and safe.
+C) UNCLASSIFIED — No gambling, scam, or malicious indicators detected.
 Indicators:
 - Official brand domain
 - No gambling or scam indicators
@@ -44,7 +44,7 @@ G) CLOUDFLARE_BLOCKED — Shows "Verifying you are human",
 
 CRITICAL RULES:
 - RETURN ONLY ONE OF THE FOLLOWING STRINGS:
-  "GAMBLING_WEBSITE", "SCAM_WEBSITE", "SAFE_WEBSITE",
+  "GAMBLING_WEBSITE", "SCAM_WEBSITE", "UNCLASSIFIED",
   "ERR_CONNECTION_RESET", "BLOCKED_BY_NETWORK_FILTER",
   "BLOCKED_BY_GOVERNMENT", "CLOUDFLARE_BLOCKED"
 - Pick the SINGLE most fitting label based on what you observe on the page.

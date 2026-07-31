@@ -15,7 +15,7 @@ An automated system for classifying websites using AI-powered browser automation
 |-------|-------------|
 | `GAMBLING_WEBSITE` | Online gambling, betting, slots, togel, poker, etc. |
 | `SCAM_WEBSITE` | Phishing, brand impersonation, or fraud site |
-| `SAFE_WEBSITE` | Legitimate site with no gambling or scam indicators |
+| `UNCLASSIFIED` | No gambling, scam, or malicious indicators detected |
 | `ERR_CONNECTION_RESET` | Connection reset error |
 | `BLOCKED_BY_NETWORK_FILTER` | Blocked by network filtering |
 | `BLOCKED_BY_GOVERNMENT` | Redirected with Indonesian government block message |
@@ -213,7 +213,7 @@ Response (done):
       "crawled_time": "2026-07-24T12:00:00",
       "website": "example",
       "task_id": "...",
-      "classify_website": "SAFE_WEBSITE"
+      "classify_website": "UNCLASSIFIED"
     }
   ]
 }

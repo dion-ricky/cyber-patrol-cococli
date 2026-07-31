@@ -1,3 +1,12 @@
+# Stage 1: Build React frontend
+FROM node:20-alpine AS frontend-build
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+
+# Stage 2: Python backend
 FROM python:3.14-slim
 
 # System deps for headless Chromium
@@ -38,6 +47,9 @@ RUN uv run playwright install chromium
 
 # Copy source
 COPY . .
+
+# Copy built frontend from stage 1
+COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 
 ENV HEADLESS=true
 ENV PYTHONUNBUFFERED=1
