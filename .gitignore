@@ -7,10 +7,6 @@ vendor/
 .env.local
 .env.*.local
 
-# Supabase
-supabase/.env
-supabase/.temp/
-
 # Deno
 .deno/
 
