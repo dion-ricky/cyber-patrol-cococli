@@ -1,0 +1,10 @@
+services:
+  cyberpatrol-etl:
+    build: .
+    image: cyberpatrol-etl:latest
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      - ETL_INTERVAL_SECONDS=1800
