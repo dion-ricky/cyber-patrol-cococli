@@ -106,6 +106,7 @@ def connect_snowflake() -> snowflake.connector.SnowflakeConnection:
         user=os.environ["SNOWFLAKE_USER"],
         password=os.environ["SNOWFLAKE_PAT"],
         role=os.environ.get("SNOWFLAKE_ROLE", "CYBERPATROL_ETL_ROLE"),
+        warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE", "COMPUTE_WH"),
         database=os.environ.get("SNOWFLAKE_DATABASE", "CYBERPATROL"),
         schema=os.environ.get("SNOWFLAKE_SCHEMA", "RAW"),
     )
