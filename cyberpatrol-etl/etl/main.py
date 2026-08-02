@@ -231,7 +231,10 @@ def run() -> None:
                 merged = load(sf_conn, cfg, df, database, schema)
                 watermark_col_upper = cfg.watermark_col.upper()
                 new_watermark = df[watermark_col_upper].max()
-                set_watermark(sf_conn, cfg.sf_table, cfg.watermark_col, new_watermark)
+                set_watermark(
+                    sf_conn, cfg.sf_table, cfg.watermark_col,
+                    new_watermark.isoformat() if hasattr(new_watermark, 'isoformat') else str(new_watermark),
+                )
                 sf_conn.commit()
                 logger.info(
                     "%s -> %s: merged %d rows, watermark advanced to %s",
