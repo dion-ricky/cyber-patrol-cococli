@@ -182,6 +182,7 @@ def load(
         auto_create_table=True,
         overwrite=True,
         table_type="temporary",
+        use_logical_type=True,
     )
 
     pk_upper = [c.upper() for c in cfg.pk_cols]
